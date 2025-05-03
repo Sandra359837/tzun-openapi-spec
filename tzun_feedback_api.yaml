@@ -75,3 +75,41 @@ paths:
                       type: string
         '500':
           description: Sheet access or processing error
+
+            /fit_score:
+    post:
+      summary: Compute resume-to-job Fit Score
+      operationId: getFitScore
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - resume_text
+                - job_description_text
+              properties:
+                resume_text:
+                  type: string
+                job_description_text:
+                  type: string
+      responses:
+        '200':
+          description: Fit score successfully computed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fit_score:
+                    type: integer
+                    example: 87
+                  match_quality:
+                    type: string
+                    example: "Strong"
+        '400':
+          description: Missing input fields
+        '500':
+          description: Embedding or calculation error
+
