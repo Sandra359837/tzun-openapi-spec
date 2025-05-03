@@ -1,1 +1,63 @@
+openapi: 3.0.0
+info:
+  title: Tzun Test Logger API
+  version: 1.0.0
+  description: Allows the Tzun GPT to log QA test results into Google Sheets for audit and performance tracking.
+
+servers:
+  - url: https://script.google.com/macros/s/AKfycbwwitpI2RNLqOIZR79LuPtWIHqTJUCG1jlekLYE9gZiOb4rX7-p2XL3VxSfCwRQbLfrew/exec
+
+paths:
+  /log_qa_result:
+    post:
+      summary: Logs the result of a QA prompt test run
+      operationId: logQaResult
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - run_id
+                - prompt_id
+                - output_score
+              properties:
+                run_id:
+                  type: string
+                  example: QA2025-05-01-A
+                prompt_id:
+                  type: string
+                  example: P3
+                persona_context:
+                  type: string
+                  example: Executive
+                resume_input:
+                  type: string
+                  example: Resume content goes here...
+                jd_input:
+                  type: string
+                  example: Job description text goes here...
+                output_score:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                flagged_issues:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Tone mismatch", "Too verbose summary"]
+                recommendations:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Use quantifiable outcomes", "Trim summary to 3 sentences"]
+                gpt_output:
+                  type: string
+                  example: Here is your updated tailored resume output.
+      responses:
+        '200':
+          description: Log successfully received and recorded.
+        '400':
+          description: Invalid input data.
 
