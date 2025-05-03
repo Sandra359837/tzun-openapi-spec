@@ -1,0 +1,129 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tzun Resume Intelligence API",
+    "version": "1.1.0",
+    "description": "OpenAPI spec for resume scoring and version diffing."
+  },
+  "paths": {
+    "/resume/score": {
+      "post": {
+        "summary": "Score a resume for ATS match, JD fit, and tone alignment.",
+        "operationId": "scoreResume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resume_text": {
+                    "type": "string"
+                  },
+                  "job_description": {
+                    "type": "string"
+                  },
+                  "tone_profile": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "resume_text"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scoring results with breakdown.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ats_score": {
+                      "type": "integer"
+                    },
+                    "jd_fit_score": {
+                      "type": "integer"
+                    },
+                    "tone_score": {
+                      "type": "integer"
+                    },
+                    "recommended_fixes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resume/diff": {
+      "post": {
+        "summary": "Compare two resume versions and return differences.",
+        "operationId": "diffResume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resume_current": {
+                    "type": "string"
+                  },
+                  "resume_previous": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "resume_current",
+                  "resume_previous"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of changes between resume versions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "section": {
+                        "type": "string"
+                      },
+                      "change_type": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://example.com/api",
+      "description": "Mock API server (placeholder until backend is live)"
+    }
+  ]
+}
