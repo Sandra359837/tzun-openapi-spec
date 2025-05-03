@@ -1,0 +1,75 @@
+info:
+  description: API schema for resume intelligence tools used by Tzun Custom GPT.
+  title: Tzun Resume Intelligence API
+  version: 1.1.0
+openapi: 3.0.0
+paths:
+  /resume/diff:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                resume_current:
+                  type: string
+                resume_previous:
+                  type: string
+              required:
+              - resume_current
+              - resume_previous
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  properties:
+                    change_type:
+                      type: string
+                    description:
+                      type: string
+                    section:
+                      type: string
+                  type: object
+                type: array
+          description: Resume change log
+      summary: Generate a diff log between two resume versions
+  /resume/score:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                job_description:
+                  type: string
+                resume_text:
+                  type: string
+                tone_profile:
+                  type: string
+              required:
+              - resume_text
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  ats_score:
+                    type: integer
+                  jd_fit_score:
+                    type: integer
+                  recommended_fixes:
+                    items:
+                      type: string
+                    type: array
+                  tone_score:
+                    type: integer
+                type: object
+          description: Resume scoring results
+      summary: Score a resume based on ATS fit, tone, and job description match
