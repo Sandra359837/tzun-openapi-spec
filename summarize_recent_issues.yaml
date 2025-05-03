@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: Tzun Issue Summary API
+  version: 1.0.0
+  description: Summarizes recent QA issues and improvement suggestions from the audit log in Google Sheets.
+
+servers:
+  - url: https://script.google.com/macros/s/AKfycbxSxlK6-eb1AKeJutyNoZwSIlCBkM-tCb555CRtg8h3cAd2ZLEfHeV9Ici2w2Z3PSR0_Q/exec 
+
+paths:
+  /summarize_issues:
+    get:
+      summary: Summarizes recent flagged QA issues
+      operationId: summarizeIssues
+      responses:
+        '200':
+          description: List of top recurring issues and recommendations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  top_issues:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "Generic phrasing"
+                      - "Too verbose summary"
+                      - "Missing skills section"
+                  tuning_recommendations:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "Limit summaries to 3 sentences"
+                      - "Avoid generic verbs and passive voice"
+                      - "Insert skills fallback if none detected"
+        '500':
+          description: Sheet access or processing error
