@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  title: Tzun Fit Score API
+  description: Calculates how well a resume matches a job description using OpenAI embeddings.
+  version: 1.0.0
+
+servers:
+  - url: https://tzun-openapi-spec.onrender.com
+
+paths:
+  /fit_score:
+    post:
+      operationId: getFitScore
+      summary: Calculates resume-to-job fit score
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resume_text:
+                  type: string
+                  description: Full resume text
+                job_description_text:
+                  type: string
+                  description: Full job description text
+              required:
+                - resume_text
+                - job_description_text
+      responses:
+        '200':
+          description: Fit score result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fit_score:
+                    type: integer
+                    description: Match percentage between resume and job description
+                    example: 87
+                  match_quality:
+                    type: string
+                    enum: [Excellent, Strong, Moderate, Weak]
+                    description: Match strength label
+        '400':
+          description: Bad request (missing fields)
+        '500':
+          description: Internal server error
