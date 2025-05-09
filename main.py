@@ -1,13 +1,14 @@
-import openai
+
+from flask import Flask, request, jsonify
+from openai import OpenAI
 import numpy as np
 import os
-from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_embedding(text, model="text-embedding-3-small"):
-    response = openai.embeddings.create(
+    response = client.embeddings.create(
         model=model,
         input=text
     )
@@ -48,4 +49,3 @@ def fit_score():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
-
